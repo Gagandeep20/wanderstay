@@ -4,6 +4,7 @@ if (process.env.NODE_ENV != "production") {
 console.log(process.env.SECRET);
 const express = require("express");
 const app = express();
+const port = 8080;
 const mongoose = require("mongoose");
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const dbUrl = process.env.ATLASDB_URL;
@@ -77,7 +78,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-  res.locals.currUser = req.user;
+  res.locals.currUser = req.user || null;
   next();
 });
 
@@ -100,6 +101,6 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("Errors.ejs", { message, statusCode });
 });
 
-app.listen(8080, () => {
+app.listen(port, () => {
   console.log("listening");
 });
